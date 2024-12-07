@@ -9,9 +9,9 @@ class Graph {
         adjacencyList.putIfAbsent(node, new ArrayList<>());
     }
 
-    public void addEdge(String from, String to, int weight) {
-        adjacencyList.get(from).add(new Edge(to, weight));
-        adjacencyList.get(to).add(new Edge(from, weight));
+    public void addEdge(String from, String to, int weight, String direction) {
+        adjacencyList.get(from).add(new Edge(to, weight, direction));
+        adjacencyList.get(to).add(new Edge(from, weight, direction));
     }
 
     public List<Edge> getNeighbors(String node) {
