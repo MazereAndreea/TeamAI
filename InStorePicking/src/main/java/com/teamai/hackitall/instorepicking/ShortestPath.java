@@ -17,11 +17,13 @@ public class ShortestPath {
     }
 
     // Funcție pentru Dijkstra
-    public static int dijkstraToTarget(List<Edge>[] graph, int start, int target) {
+    public static List<Integer> dijkstraToTarget(List<Edge>[] graph, int start, int target) {
         int n = graph.length;
         int[] distances = new int[n];
         boolean[] visited = new boolean[n];
+        int[] previous = new int[n];
         Arrays.fill(distances, Integer.MAX_VALUE);
+        Arrays.fill(previous, -1);  // Initialize to -1, which means no previous node
         distances[start] = 0;
 
         PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[1]));
@@ -37,19 +39,29 @@ public class ShortestPath {
 
             // If we've reached the target node, return the distance
             if (node == target) {
-                return dist;
+                return reconstructPath(previous, target);
             }
 
             for (Edge edge : graph[node]) {
                 if (!visited[edge.destination] && dist + edge.weight < distances[edge.destination]) {
                     distances[edge.destination] = dist + edge.weight;
+                    previous[edge.destination] = node;
                     pq.offer(new int[] { edge.destination, distances[edge.destination] });
                 }
             }
         }
 
         // If the target is unreachable
-        return -1;
+        return null;
+    }
+
+    private static List<Integer> reconstructPath(int[] previous, int target) {
+        List<Integer> path = new ArrayList<>();
+        for (int at = target; at != -1; at = previous[at]) {
+            path.add(at);
+        }
+        Collections.reverse(path);  // Reverse to get the path from start to target
+        return path;
     }
 
     public static void main(String[] args) {
@@ -82,9 +94,9 @@ public class ShortestPath {
         // Calculăm drumul minim de la 0 la 4
         int start = 0;
         int target = 4;
-        int shortestDistance = dijkstraToTarget(graph, start, target);
+        List<Integer> shortestDistance = dijkstraToTarget(graph, start, target);
 
-        if (shortestDistance != -1) {
+        if (!shortestDistance.isEmpty()) {
             System.out.println("Cel mai scurt drum de la nodul " + start + " la nodul " + target + " este: " + shortestDistance);
         } else {
             System.out.println("Nodul " + target + " este inaccesibil din nodul " + start);
