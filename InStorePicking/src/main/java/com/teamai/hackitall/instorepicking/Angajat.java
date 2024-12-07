@@ -28,7 +28,7 @@ public class Angajat{
             }
         }
 
-        // Print the shortest distance from source to all vertices
+
         System.out.println("Vertex \t Distance from Source");
         for (int i = 0; i < V; i++)
             System.out.println(i + " \t\t " + dist[i]);
