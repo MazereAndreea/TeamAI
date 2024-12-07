@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 public class CalcPath {
+    private static List<String> optimizedOrder; // Make it a static field
+
     public static List<String> optimizePickOrder(Graph storeGraph, List<String> pickList, String start) {
         Map<String, Integer> distances = InstorePicker.shortestPath(storeGraph, start);
 
@@ -14,7 +16,7 @@ public class CalcPath {
         return pickList;
     }
 
-    CalcPath() {
+    public CalcPath() {
         Graph store = new Graph();
         store.addNode("Start");
         store.addNode("Raionul 1-Sector 1");
@@ -50,9 +52,12 @@ public class CalcPath {
 
         List<String> pickList = Arrays.asList("Raionul 3-Sector 9", "Raionul 1-Sector 1", "Raionul 2-Sector 5");
 
-        List<String> optimizedOrder = optimizePickOrder(store, pickList, "Start");
+        optimizedOrder = optimizePickOrder(store, pickList, "Start");
         System.out.println("Optimized Pick Order: " + optimizedOrder);
     }
 
-
+    // Expose the optimized list
+    public static List<String> getOptimizedOrder() {
+        return optimizedOrder;
+    }
 }

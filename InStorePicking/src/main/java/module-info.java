@@ -1,6 +1,7 @@
 module com.teamai.hackitall.instorepicking {
     requires javafx.controls;
     requires javafx.fxml;
+    requires jdk.httpserver;
 
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
