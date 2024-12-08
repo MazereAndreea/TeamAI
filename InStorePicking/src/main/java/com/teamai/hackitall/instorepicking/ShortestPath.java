@@ -8,7 +8,7 @@ import static com.teamai.hackitall.instorepicking.Categorie.*;
 
 public class ShortestPath {
     public String textArea = "";
-    public int stepsText;
+    public int stepsText = 0;
     private List<Edge>[] graph;
     private ArrayList<Integer> targets = new ArrayList<>(Arrays.asList(3,2,6,4));
     private int nrProduse;
@@ -67,7 +67,7 @@ public class ShortestPath {
 
         while (current != -1) {
             String direction = directionToNode[current];
-            pathWithDirections.add((direction != null ? direction : "") + " Raftul curent: " + current);
+            pathWithDirections.add((direction != null ? direction : "") +" Raionul curent: " + current);
             current = previous[current];
         }
 
@@ -77,19 +77,18 @@ public class ShortestPath {
 
     ShortestPath() {
         ConstructPath();
-        calcNextProduct();
     }
 
     public void ConstructPath() {
         int n = 7;
         graph = new ArrayList[n];
         nrProduse = targets.size();
-        target = targets.getFirst();
-
         Collections.sort(targets);
         for (int i = 0; i < n; i++) {
             graph[i] = new ArrayList<>();
         }
+
+        target = targets.getFirst();
 
         graph[Categorie.LACTATE.ordinal()].add(new Edge(0, 1, 2, "straight"));
         graph[Categorie.CARNURI.ordinal()].add(new Edge(1, 0, 2, "back"));
@@ -132,30 +131,34 @@ public class ShortestPath {
     private int iterator = 1;
     int target;
 
-    public boolean calcNextProduct() {
-        if(iterator <= nrProduse){
+    public void calcNextProduct() {
+        if(iterator <= nrProduse) {
             List<String> pathWithDirections = dijkstraWithDirections(graph, start, target, targets);
             if (pathWithDirections != null) {
                 textArea = "";
-
+                int iTemp = 0;
                 for (String step : pathWithDirections) {
                     textArea += step + "\n";
+                    iTemp++;
                     System.out.println(step);
                 }
-            } else {
-                System.out.println("Node " + target + " is inaccessible from node " + start);
+
+                if(iTemp == 1) {
+                    textArea = "";
+                }
             }
-            
+
             stepsText = start;
             start = target;
-            if(++iterator > targets.size() -1)
-                return false;
+
+            if(iterator >= targets.size()) {
+                return;
+            }
 
             target = targets.get(iterator);
             System.out.println(" ");
             System.out.println("PRODUS NOU");
+            iterator++;
         }
-
-        return true;
     }
 }

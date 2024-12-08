@@ -7,15 +7,15 @@
     <children>
         <VBox alignment="CENTER" spacing="20.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
             <!-- Shelf Label -->
-            <Label style="-fx-font-size: 16px;" text="You are at shelf:" />
+            <Label fx:id="shelf_route" style="-fx-font-size: 16px;" text="Raionul produsului curent:" />
             <TextField fx:id="shelfTextField" editable="false" prefHeight="30.0" prefWidth="200.0" />
 
             <!-- Message Label -->
-            <Label style="-fx-font-size: 16px;" text="Route:" />
+            <Label fx:id="label_route" style="-fx-font-size: 16px;" text="Ruta optima:" />
             <TextArea fx:id="messageLabel" editable="false" prefHeight="100.0" prefWidth="200.0" wrapText="true" />
 
             <!-- Next Button -->
-            <Button fx:id="nextButton" onAction="#handleNextButtonClick" style="-fx-font-size: 14px;" text="Next Product" />
+            <Button fx:id="nextButton" onAction="#handleNextButtonClick" style="-fx-font-size: 14px;" text="Urmatorul produs" />
         </VBox>
     </children>
 </AnchorPane>
