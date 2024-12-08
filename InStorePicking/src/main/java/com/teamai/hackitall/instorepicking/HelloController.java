@@ -1,6 +1,7 @@
 package com.teamai.hackitall.instorepicking;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 public class HelloController {
@@ -8,7 +9,11 @@ public class HelloController {
     private Label welcomeText;
 
     @FXML
-    protected void onHelloButtonClick() {
-        welcomeText.setText("Welcome to JavaFX Application!");
+    private Button nextButton; // This links to the fx:id in the FXML file
+
+    @FXML
+    private void NextProduct(int i) {
+        // Change the text of the button when it is clicked
+        nextButton.setText("Go to Product ");
     }
 }
