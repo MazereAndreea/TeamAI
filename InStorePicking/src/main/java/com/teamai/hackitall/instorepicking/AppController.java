@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class HelloController extends ShortestPath {
+public class AppController extends ShortestPath {
 
     public Label shelf_route;
     public Label label_route;
