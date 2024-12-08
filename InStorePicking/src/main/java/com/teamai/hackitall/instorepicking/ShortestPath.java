@@ -2,11 +2,13 @@ package com.teamai.hackitall.instorepicking;
 
 import java.util.*;
 
+import static com.teamai.hackitall.instorepicking.Categorie.*;
+
 public class ShortestPath {
 
 
     static class Edge {
-        int source, destination, weight;
+        int source, destination, weight ;
         String direction;
         public Edge(int source, int destination, int weight, String direction) {
             this.source = source;
@@ -17,7 +19,7 @@ public class ShortestPath {
     }
 
 
-    public static List<String> dijkstraWithDirections(List<Edge>[] graph, int start, int target) {
+    public static List<String> dijkstraWithDirections(List<Edge>[] graph, int start, int target, ArrayList<Integer> targets) {
         int n = graph.length;
         int[] distances = new int[n];
         boolean[] visited = new boolean[n];
@@ -37,7 +39,6 @@ public class ShortestPath {
 
             if (visited[node]) continue;
             visited[node] = true;
-
             if (node == target) {
                 return reconstructPathWithDirections(previous, directionToNode, target);
             }
@@ -61,7 +62,7 @@ public class ShortestPath {
 
         while (current != -1) {
             String direction = directionToNode[current];
-            pathWithDirections.add((direction != null ? direction : "") + " to Shelf " + current);
+            pathWithDirections.add((direction != null ? direction : "") + " current shelf " + current);
             current = previous[current];
         }
 
@@ -70,43 +71,74 @@ public class ShortestPath {
     }
 
     public static void main(String[] args) {
-        /
-        int n = 5;
+
+        int n = 7;
         List<Edge>[] graph = new ArrayList[n];
+        int nrDeProduse = 4;
+        ArrayList<Integer> targets = new ArrayList<>(Arrays.asList(3,2,6,4));
+        Collections.sort(targets);
         for (int i = 0; i < n; i++) {
             graph[i] = new ArrayList<>();
         }
 
+        graph[Categorie.LACTATE.ordinal()].add(new Edge(0, 1, 2, "straight"));
+        graph[Categorie.CARNURI.ordinal()].add(new Edge(1, 0, 2, "back"));
 
-        graph[0].add(new Edge(0, 1, 2, "straight"));
-        graph[1].add(new Edge(1, 0, 2, "back"));
+        graph[Categorie.LACTATE.ordinal()].add(new Edge(0, 2, 4, "right"));
+        graph[Categorie.CARTOFI.ordinal()].add(new Edge(2, 0, 4, "left"));
 
-        graph[0].add(new Edge(0, 2, 4, "right"));
-        graph[2].add(new Edge(2, 0, 4, "left"));
+        graph[Categorie.CARNURI.ordinal()].add(new Edge(1, 2, 1, "left"));
+        graph[Categorie.CARTOFI.ordinal()].add(new Edge(2, 1, 1, "right"));
 
-        graph[1].add(new Edge(1, 2, 1, "left"));
-        graph[2].add(new Edge(2, 1, 1, "right"));
+        graph[Categorie.CARNURI.ordinal()].add(new Edge(1, 3, 7, "straight"));
+        graph[Categorie.DULCIURI.ordinal()].add(new Edge(3, 1, 7, "back"));
 
-        graph[1].add(new Edge(1, 3, 7, "straight"));
-        graph[3].add(new Edge(3, 1, 7, "back"));
+        graph[Categorie.CARTOFI.ordinal()].add(new Edge(2, 3, 3, "diagonal-stanga"));
+        graph[Categorie.DULCIURI.ordinal()].add(new Edge(3, 2, 3, "diagonal-stanga-back"));
 
-        graph[2].add(new Edge(2, 3, 3, "straight"));
-        graph[3].add(new Edge(3, 2, 3, "back"));
+        graph[Categorie.DULCIURI.ordinal()].add(new Edge(3, 4, 2, "straight"));
+        graph[Categorie.LEGUME.ordinal()].add(new Edge(4, 3, 2, "back"));
 
-        graph[3].add(new Edge(3, 4, 2, "straight"));
-        graph[4].add(new Edge(4, 3, 2, "back"));
+        graph[Categorie.CARNURI.ordinal()].add(new Edge(2, 5, 2, "right"));
+        graph[Categorie.CONGELATE.ordinal()].add(new Edge(5, 2, 2, "left"));
+
+        graph[Categorie.DULCIURI.ordinal()].add(new Edge(3, 6, 10, "right"));
+        graph[Categorie.PANIFICATIE.ordinal()].add(new Edge(6, 3, 10, "left"));
+
+        graph[Categorie.CARTOFI.ordinal()].add(new Edge(2, 6, 10, "straight"));
+        graph[Categorie.PANIFICATIE.ordinal()].add(new Edge(6, 2, 10, "back"));
+
+        graph[Categorie.CARNURI.ordinal()].add(new Edge(1, 6, 10, "diagonal-dreapta"));
+        graph[Categorie.PANIFICATIE.ordinal()].add(new Edge(6, 1, 10, "left"));
+
+        graph[Categorie.CONGELATE.ordinal()].add(new Edge(5, 6, 4, "diagonal-stanga"));
+        graph[Categorie.PANIFICATIE.ordinal()].add(new Edge(6, 5, 4, "back-diagonal-stanga"));
+
+        graph[Categorie.LEGUME.ordinal()].add(new Edge(4, 6, 10, "diagonal-stanga"));
+        graph[Categorie.PANIFICATIE.ordinal()].add(new Edge(6, 4,10 , "back-diagonal-stanga"));
 
 
         int start = 0;
-        int target = 4;
-        List<String> pathWithDirections = dijkstraWithDirections(graph, start, target);
-
-        if (pathWithDirections != null) {
-            for (String step : pathWithDirections) {
-                System.out.println(step);
+        int target = targets.getFirst();
+        int i = 1;
+        while(i <= nrDeProduse){
+            List<String> pathWithDirections = dijkstraWithDirections(graph, start, target, targets);
+            if (pathWithDirections != null) {
+                for (String step : pathWithDirections) {
+                    System.out.println(step);
+                }
+            } else {
+                System.out.println("Nodul " + target + " este inaccesibil din nodul " + start);
             }
-        } else {
-            System.out.println("Nodul " + target + " este inaccesibil din nodul " + start);
+            start = target;
+
+            if(++i > targets.size() -1)
+                break;
+
+            target = targets.get(i);
+            System.out.println(" ");
+            System.out.println("PRODUS NOU");
         }
     }
 }
+
