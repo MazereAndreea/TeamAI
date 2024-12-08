@@ -6,8 +6,16 @@
 <AnchorPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamai.hackitall.instorepicking.HelloController">
     <children>
         <VBox alignment="CENTER" spacing="20.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
-            <Label fx:id="messageLabel" text="You are at shelf X. Go to shelf Y" />
-            <Button fx:id="nextButton" text="Next" />
+            <!-- Shelf Label -->
+            <Label style="-fx-font-size: 16px;" text="You are at shelf:" />
+            <TextField fx:id="shelfTextField" editable="false" prefHeight="30.0" prefWidth="200.0" />
+
+            <!-- Message Label -->
+            <Label style="-fx-font-size: 16px;" text="Route:" />
+            <TextArea fx:id="messageLabel" editable="false" prefHeight="100.0" prefWidth="200.0" wrapText="true" />
+
+            <!-- Next Button -->
+            <Button fx:id="nextButton" onAction="#handleNextButtonClick" style="-fx-font-size: 14px;" text="Next Product" />
         </VBox>
     </children>
 </AnchorPane>

@@ -1,19 +1,60 @@
 package com.teamai.hackitall.instorepicking;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
-public class HelloController {
-    @FXML
-    private Label welcomeText;
+import java.io.IOException;
+
+public class HelloController extends ShortestPath {
 
     @FXML
-    private Button nextButton; // This links to the fx:id in the FXML file
+    private Label welcomeText; // Existing welcomeText label
 
     @FXML
-    private void NextProduct(int i) {
-        // Change the text of the button when it is clicked
-        nextButton.setText("Go to Product ");
+    private Button nextButton;
+
+    @FXML
+    public TextField shelfTextField;
+
+    @FXML
+    public TextArea messageLabel;
+
+    @FXML
+    private void initialize() {
+        // This method is called automatically after the FXML is loaded
+        updateContext();
+    }
+
+    @FXML
+    private void handleNextButtonClick() {
+        if(!calcNextProduct()) {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("orderComplete.fxml"));
+                Parent nextSceneRoot = fxmlLoader.load();
+
+                Scene nextScene = new Scene(nextSceneRoot);
+
+                Stage currentStage = (Stage) nextButton.getScene().getWindow();
+
+                currentStage.setScene(nextScene);
+
+                currentStage.setTitle("Next Scene");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        updateContext();
+    }
+
+    private void updateContext() {
+        shelfTextField.setText("Raftul " + stepsText);
+        messageLabel.setText(String.valueOf(textArea));
     }
 }

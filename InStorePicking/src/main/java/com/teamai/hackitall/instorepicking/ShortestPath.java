@@ -1,11 +1,17 @@
 package com.teamai.hackitall.instorepicking;
 
+import javafx.fxml.FXML;
+
 import java.util.*;
 
 import static com.teamai.hackitall.instorepicking.Categorie.*;
 
 public class ShortestPath {
-
+    public String textArea = "";
+    public int stepsText;
+    private List<Edge>[] graph;
+    private ArrayList<Integer> targets = new ArrayList<>(Arrays.asList(3,2,6,4));
+    private int nrProduse;
 
     static class Edge {
         int source, destination, weight ;
@@ -17,7 +23,6 @@ public class ShortestPath {
             this.direction = direction;
         }
     }
-
 
     public static List<String> dijkstraWithDirections(List<Edge>[] graph, int start, int target, ArrayList<Integer> targets) {
         int n = graph.length;
@@ -62,7 +67,7 @@ public class ShortestPath {
 
         while (current != -1) {
             String direction = directionToNode[current];
-            pathWithDirections.add((direction != null ? direction : "") + " current shelf " + current);
+            pathWithDirections.add((direction != null ? direction : "") + " Raftul curent: " + current);
             current = previous[current];
         }
 
@@ -70,12 +75,17 @@ public class ShortestPath {
         return pathWithDirections;
     }
 
-    public static void main(String[] args) {
+    ShortestPath() {
+        ConstructPath();
+        calcNextProduct();
+    }
 
+    public void ConstructPath() {
         int n = 7;
-        List<Edge>[] graph = new ArrayList[n];
-        int nrDeProduse = 4;
-        ArrayList<Integer> targets = new ArrayList<>(Arrays.asList(3,2,6,4));
+        graph = new ArrayList[n];
+        nrProduse = targets.size();
+        target = targets.getFirst();
+
         Collections.sort(targets);
         for (int i = 0; i < n; i++) {
             graph[i] = new ArrayList<>();
@@ -116,29 +126,36 @@ public class ShortestPath {
 
         graph[Categorie.LEGUME.ordinal()].add(new Edge(4, 6, 10, "diagonal-stanga"));
         graph[Categorie.PANIFICATIE.ordinal()].add(new Edge(6, 4,10 , "back-diagonal-stanga"));
+    }
 
+    private int start = 0;
+    private int iterator = 1;
+    int target;
 
-        int start = 0;
-        int target = targets.getFirst();
-        int i = 1;
-        while(i <= nrDeProduse){
+    public boolean calcNextProduct() {
+        if(iterator <= nrProduse){
             List<String> pathWithDirections = dijkstraWithDirections(graph, start, target, targets);
             if (pathWithDirections != null) {
+                textArea = "";
+
                 for (String step : pathWithDirections) {
+                    textArea += step + "\n";
                     System.out.println(step);
                 }
             } else {
-                System.out.println("Nodul " + target + " este inaccesibil din nodul " + start);
+                System.out.println("Node " + target + " is inaccessible from node " + start);
             }
+            
+            stepsText = start;
             start = target;
+            if(++iterator > targets.size() -1)
+                return false;
 
-            if(++i > targets.size() -1)
-                break;
-
-            target = targets.get(i);
+            target = targets.get(iterator);
             System.out.println(" ");
             System.out.println("PRODUS NOU");
         }
+
+        return true;
     }
 }
-
