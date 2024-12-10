@@ -1,5 +1,5 @@
 # TeamAI
-This project was developed as part of a hackathon challenge focused on optimizing in-store picking processes for the MegaImage supermarket chain. The goal was to create innovative solutions that improve the efficiency and accuracy of picking items from store shelves for customer orders, leveraging technology and streamlined workflows.
+This project was developed as part of a hackathon challenge, HACKITALL 2024, organized by LSAC, UPB which focused on optimizing in-store picking processes for the MegaImage supermarket chain. The goal was to create innovative solutions that improve the efficiency and accuracy of picking items from store shelves for customer orders, leveraging technology and streamlined workflows.
 We implemented Dijkstra's algorithm, where nodes represent store shelves, to determine the shortest path for picking products from customer orders.
 A user-friendly graphical interface was built using Java and JavaFX to assist employees in navigating the store efficiently, minimizing travel time and enhancing order preparation speed.
 The solution is designed to be scalable and adaptable to any store layout or planogram, making it suitable for a wide range of supermarket configurations.
